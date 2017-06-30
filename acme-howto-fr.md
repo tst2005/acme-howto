@@ -1,12 +1,14 @@
 
 Résumé de ce que l'on souhaite:
-- un user www-data (groupe www-data) pour faire tourner le frontal web (nginx)
-- un user acme (groupe acme) pour faire tourner l'outil letsencrypt (dehydrated)
-- un espace accessible par l'url /.well-known/acme-challenge/
-  et écrivable par l'utilisateur acme
+- un user `www-data` (groupe `www-data`) pour faire tourner le frontal web (dans mon cas nginx)
+- un user `acme` (groupe `acme`) pour faire tourner l'outil letsencrypt ([dehydrated]())
+- un espace accessible par l'url `/.well-known/acme-challenge/` (doit etre lisible par le frontal web)
+  et doit être écrivable par l'utilisateur `acme`
 - des certiciats et clés lisible par le frontab web
 - un mecanisme pour reloader les certificats sur le frontal web lorsqu'ils changent
 
+Astuce additionnelle:
+- rendre accessible le certificat de l'applicatif (exemple: synapse pour une instance matrix.org)
 
 
 Créer l'user acme
@@ -14,7 +16,7 @@ Créer l'user acme
 	groupadd --system acme
 	usermod -g acme acme
 
-Créer le repertoire accessible en ecriture par acme
+Créer le répertoire accessible en écriture par acme
 	mkdir /var/www/acme-challenge
 	chown acme:www-data /var/www/acme-challenge
 	chmod u+rwx,go-rw+x /var/www/acme-challenge
