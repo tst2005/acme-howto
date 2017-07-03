@@ -12,42 +12,59 @@ Astuce additionnelle:
 
 
 Créer l'user acme
+
+```
 	adduser --system --home /home/acme --shell /bin/bash --disabled-password acme
 	groupadd --system acme
 	usermod -g acme acme
+```
 
 Créer le répertoire accessible en écriture par acme
+
+```
 	mkdir /var/www/acme-challenge
 	chown acme:www-data /var/www/acme-challenge
 	chmod u+rwx,go-rw+x /var/www/acme-challenge
+```
 
-# drwxr-x--x 2 acme www-data 4096 Jun 12 23:39 /var/www/acme-challenge/
+`# drwxr-x--x 2 acme www-data 4096 Jun 12 23:39 /var/www/acme-challenge/`
 
 
-
+```
 	su - acme
+```
 
 Telecharger l'outil (dehydrated)
+
+```
 	mkdir repo
 	cd repo
 		git clone $GITHUB_dehydrated_URL dehydrated
+```
+
 Choisir une version précise (la stable la plus récente)
+
+```
 		cd dehydrated
 			git tag
 			git checkout v0.4.0
 	cd ~
+```
 
 L'outil aime travailler avec tout ses fichiers a coté de lui
 Nous utiliserons une copie statique de l'outil (pas de mise a jour automatique directe de l'outil)
 
+```
 	mkdir acme-util
 	cp -a repo/dehydrated/dehydrated acme-util/dehydrated-v0.4.0
+```
 
+```
+	wget letsencrypt-prod.sh
+	wget letsencrypt-test.sh
+```
 
-
-
-	# wget letsencrypt.sh
-
+```
 	./letsencrypt-test.sh --env
 
 	./letsencrypt-test.sh --register --accept-terms
@@ -57,12 +74,13 @@ Nous utiliserons une copie statique de l'outil (pas de mise a jour automatique d
 + Done!
 
 	./letsencrypt-test.sh --cron
+```
 
 si tout va bien
 
 modif de la config nginx, activer l'https avec les certificats ssl (acme-test/certs/...)
 
-
+```
   380  cd /etc/
   381  git diff nginx/sites-available/wmfr
   382  git ci -m 'acme-challenge nginx config (letsencrypt)' nginx/sites-available/wmfr
@@ -145,4 +163,4 @@ modif de la config nginx, activer l'https avec les certificats ssl (acme-test/ce
   497  /etc/init.d/nginx reload
   498  vim sites-enabled/*jk*
   499  less /etc/nginx/sites-enabled/*
-
+```
